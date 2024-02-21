@@ -11,7 +11,6 @@ import com.batherphilippa.dropgame.screen.MainMenuScreen;
 public class Drop extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
-
 	
 	@Override
 	public void create () {

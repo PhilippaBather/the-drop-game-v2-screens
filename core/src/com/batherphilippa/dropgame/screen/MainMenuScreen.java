@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
+
 public class MainMenuScreen implements Screen {
 
     private final Drop game;
@@ -15,7 +18,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Drop game) {
         this.game = game;
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, 800, 400);
+        this.camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
     }
 
     @Override
