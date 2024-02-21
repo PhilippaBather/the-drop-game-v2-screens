@@ -3,49 +3,51 @@ package com.batherphilippa.dropgame.domain;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.batherphilippa.dropgame.utils.KeyDirection;
 
-public class Raindrop {
-    private final Texture texture; // loaded img stored into RAM
-    private final Rectangle raindrop;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
+import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_HEIGHT;
+import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
+
+public class Raindrop extends Character {
     private final long lastDropTime;
 
     public Raindrop(Texture texture) {
-        this.texture = texture;
-        this.raindrop = new Rectangle();
-        this.lastDropTime = TimeUtils.nanoTime(); // current value of system timer in nano seconds
+        super(texture);
+        this.lastDropTime = TimeUtils.nanoTime(); // current value of system timer in nanoseconds
         setInitialCoordinates();
     }
 
-    private void setInitialCoordinates() {
-        this.raindrop.x = MathUtils.random(0, 800-64);
-        this.raindrop.y = 480;
-        this.raindrop.width = 64;
-        this.raindrop.height = 64;
+    public void setInitialCoordinates() {
+        super.rectangle.x = MathUtils.random(0, VIEWPORT_WIDTH - SPRITE_WIDTH);
+        super.rectangle.y = VIEWPORT_HEIGHT;
+        super.rectangle.width = SPRITE_WIDTH;
+        super.rectangle.height = SPRITE_HEIGHT;
     }
 
+    @Override
+    public void move(Vector2 position, KeyDirection dir) {
+        super.rectangle.y -= position.y;
+    }
+
+    @Override
+    public void update() {
+    }
 
     public Rectangle getRaindropRectangle() {
-        return raindrop;
-    }
-
-    public Texture getTexture() {
-        return this.texture;
+        return super.rectangle;
     }
 
     public long getLastDropTime() {
         return this.lastDropTime;
     }
 
-    public float getXCoord() {
-        return this.raindrop.x;
-    }
 
     public float getYCoord() {
-        return this.raindrop.y;
+        return super.rectangle.y;
     }
 
-    public void setYCoord(float yCoord) {
-        this.raindrop.y -= yCoord;
-    }
 }

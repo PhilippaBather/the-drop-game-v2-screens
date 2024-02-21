@@ -1,10 +1,14 @@
 package com.batherphilippa.dropgame.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
+
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 
 public class MainMenuScreen implements Screen {
 
@@ -14,7 +18,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Drop game) {
         this.game = game;
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, 800, 400);
+        this.camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
     }
 
     @Override
@@ -32,11 +36,17 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.font.draw(game.batch, "Welcome to Drop!!!", 250, 250); // x and y: position of font on screen
         game.font.draw(game.batch, "Tap anywhere to begin!", 250, 200);
+        game.font.draw(game.batch, "Press ESCAPE to exit", 250, 150);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
             game.setScreen(new GameScreen(game));
             dispose(); // dispose of MainMenuScreen
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            dispose();
+            System.exit(0);  // zero indicates non abnormal termination
         }
     }
 
