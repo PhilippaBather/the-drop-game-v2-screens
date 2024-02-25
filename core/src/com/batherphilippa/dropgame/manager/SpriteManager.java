@@ -10,7 +10,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.domain.Bucket;
+import com.batherphilippa.dropgame.domain.Item;
 import com.batherphilippa.dropgame.domain.Raindrop;
+import com.batherphilippa.dropgame.domain.Stone;
 import com.batherphilippa.dropgame.screen.GameOverScreen;
 import com.batherphilippa.dropgame.utils.KeyDirection;
 
@@ -28,7 +30,8 @@ public class SpriteManager {
     private final Drop game;
 
     private Bucket player;
-    private Array<Raindrop> raindrops;
+    private Array<Item> raindrops;
+    private Array<Item> stones;
     private float lastDropTime;
     private float gameTime;
 
@@ -43,13 +46,21 @@ public class SpriteManager {
         // generate characters
         player = new Bucket(new Texture(resourceManager.loadImage(CHARACTER_PLAYER)));
         raindrops = new Array<>();
+        stones = new Array<>();
         spawnRaindrop();
+        spawnEnemy();
     }
 
     private void spawnRaindrop() {
-        Raindrop raindrop = new Raindrop(new Texture(resourceManager.loadImage(CHARACTER_ITEM)));
+        Raindrop raindrop = new Raindrop(new Texture(resourceManager.loadImage(CHARACTER_ITEM_DROP)));
         raindrops.add(raindrop);
         lastDropTime = raindrop.getLastDropTime();
+    }
+
+    private void spawnEnemy() {
+        Stone stone = new Stone(new Texture(resourceManager.loadImage(CHARACTER_ITEM_ENEMY)));
+        stones.add(stone);
+        lastDropTime = stone.getLastDropTime();
     }
 
     public void draw() {
@@ -57,8 +68,11 @@ public class SpriteManager {
         game.font.draw(game.batch, "Drops Collected: " + player.getDropsCollected(), 10, VIEWPORT_HEIGHT - 10);
         game.font.draw(game.batch, "Time: " + (int) gameTime, VIEWPORT_WIDTH - 60, VIEWPORT_HEIGHT - 10);
         player.render(game.batch);
-        for (Raindrop raindrop : raindrops) {
+        for (Item raindrop : raindrops) {
             raindrop.render(game.batch);
+        }
+        for (Item stone : stones) {
+            stone.render(game.batch);
         }
         game.batch.end();
     }
@@ -98,10 +112,16 @@ public class SpriteManager {
     public void update(float delta) {
         player.update();
         checkLastDropTime(); // check last time raindrop spawned; create if necessary
-        moveRaindrops();
+        moveItem(raindrops, false);
+        moveItem(stones, true);
 
         gameTime -= delta;
         if (gameTime < 0) {
+            dispose();
+            game.setScreen(new GameOverScreen(game, player.getDropsCollected()));
+        }
+
+        if (player.getDropsCollected() < 0) {
             dispose();
             game.setScreen(new GameOverScreen(game, player.getDropsCollected()));
         }
@@ -110,19 +130,24 @@ public class SpriteManager {
     private void checkLastDropTime() {
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
             spawnRaindrop();
+            spawnEnemy();
         }
     }
 
-    private void moveRaindrops() {
-        for (Iterator<Raindrop> iter = raindrops.iterator(); iter.hasNext(); ) {
-            Raindrop raindrop = iter.next();
-            raindrop.move(new Vector2(0, 200 * Gdx.graphics.getDeltaTime()), null);
-            if (raindrop.getYCoord() + 64 < 0) {
+    private void moveItem(Array<Item> items, boolean isEnemy) {
+        for (Iterator<Item> iter = items.iterator(); iter.hasNext(); ) {
+            Item item = iter.next();
+            item.move(new Vector2(0, 200 * Gdx.graphics.getDeltaTime()), null);
+            if (item.getYCoord() + 64 < 0) {
                 iter.remove();
             }
-            if (raindrop.getRaindropRectangle().overlaps(player.getBucketRectangle())) {
-                player.updateDropsCollected();
-                resourceManager.playSound(SOUND_DROP);
+            if (item.getRectangle().overlaps(player.getBucketRectangle())) {
+                player.updateDropsCollected(isEnemy);
+                if (!isEnemy) {
+                    resourceManager.playSound(SOUND_DROP);
+                } else {
+                    resourceManager.playSound(SOUND_STONE);
+                }
                 iter.remove();
             }
         }
