@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
+import com.batherphilippa.dropgame.manager.ConfigurationManager;
 import com.batherphilippa.dropgame.manager.ResourceManager;
 import com.batherphilippa.dropgame.manager.SpriteManager;
 
@@ -51,7 +52,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clear(0, 0, 0f, 0);
+        } else {
+            ScreenUtils.clear(0, 0, 0.2f, 1);
+        }
 
         checkForPause();
 
@@ -83,6 +88,7 @@ public class GameScreen implements Screen {
             isPaused = false;
         }
     }
+
     @Override
     public void resize(int width, int height) {
 
