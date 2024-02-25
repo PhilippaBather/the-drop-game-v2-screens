@@ -1,19 +1,15 @@
 package com.batherphilippa.dropgame.domain;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.batherphilippa.dropgame.utils.KeyDirection;
 
 import static com.batherphilippa.dropgame.utils.KeyDirection.LEFT;
 import static com.batherphilippa.dropgame.utils.KeyDirection.RIGHT;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_HEIGHT;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
-import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 
 public class Bucket extends Character {
     private int dropsCollected;
@@ -30,7 +26,6 @@ public class Bucket extends Character {
         super.rectangle.width = SPRITE_WIDTH;
         super.rectangle.height = SPRITE_HEIGHT;
         super.coords.x = rectangle.x;
-
     }
 
     @Override
