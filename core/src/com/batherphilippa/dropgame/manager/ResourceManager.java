@@ -23,6 +23,7 @@ public class ResourceManager {
         soundMap = new HashMap<>();
         soundMap.put(SOUND_DROP, Gdx.audio.newSound(Gdx.files.internal("sound/drop.wav")));
         soundMap.put(SOUND_STONE, Gdx.audio.newSound(Gdx.files.internal("sound/stone.wav")));
+        soundMap.put(SOUND_GAME_OVER, Gdx.audio.newSound(Gdx.files.internal("sound/game_over.wav")));
 
         musicMap = new HashMap<>();
         musicMap.put(MUSIC_THEME, Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3")));
@@ -43,13 +44,17 @@ public class ResourceManager {
     public void loadSound(String name) {
         soundMap.get(name);
     }
-
     public void playMusic(String name) {
         musicMap.get(name).play();
     }
-
+    public void stopMusic(String name) {
+        musicMap.get(name).stop();
+    }
     public void playSound(String name) {
         soundMap.get(name).play();
+    }
+    public void stopSound(String name) {
+        soundMap.get(name).stop();
     }
     public void dispose() {
         imageMap.clear();

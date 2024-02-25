@@ -14,6 +14,7 @@ import com.batherphilippa.dropgame.domain.Item;
 import com.batherphilippa.dropgame.domain.Raindrop;
 import com.batherphilippa.dropgame.domain.Stone;
 import com.batherphilippa.dropgame.screen.GameOverScreen;
+import com.batherphilippa.dropgame.screen.GameScreen;
 import com.batherphilippa.dropgame.utils.KeyDirection;
 
 import java.util.Iterator;
@@ -28,6 +29,7 @@ public class SpriteManager {
 
     private final ResourceManager resourceManager;
     private final Drop game;
+    private final GameScreen gameScreen;
 
     private Bucket player;
     private Array<Item> raindrops;
@@ -35,9 +37,10 @@ public class SpriteManager {
     private float lastDropTime;
     private float gameTime;
 
-    public SpriteManager(ResourceManager resourceManager, Drop game) {
+    public SpriteManager(ResourceManager resourceManager, Drop game, GameScreen gameScreen) {
         this.resourceManager = resourceManager;
         this.game = game;
+        this.gameScreen = gameScreen;
         this.gameTime = GAME_TIME;  // in sec
         init();
     }
@@ -117,13 +120,16 @@ public class SpriteManager {
 
         gameTime -= delta;
         if (gameTime < 0) {
+            resourceManager.playSound(SOUND_GAME_OVER);
+            game.setScreen(new GameOverScreen(game, player.getDropsCollected(), resourceManager));
             dispose();
-            game.setScreen(new GameOverScreen(game, player.getDropsCollected()));
         }
 
         if (player.getDropsCollected() < 0) {
+            resourceManager.stopMusic(MUSIC_THEME);
+            resourceManager.playSound(SOUND_GAME_OVER);
             dispose();
-            game.setScreen(new GameOverScreen(game, player.getDropsCollected()));
+            game.setScreen(new GameOverScreen(game, player.getDropsCollected(), resourceManager));
         }
     }
 
@@ -154,7 +160,6 @@ public class SpriteManager {
     }
 
     public void dispose() {
-        resourceManager.dispose();
         player.getTexture().dispose();
         raindrops.clear();
     }
