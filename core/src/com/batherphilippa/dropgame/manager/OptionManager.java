@@ -9,13 +9,9 @@ import com.batherphilippa.dropgame.screen.GameScreen;
 import com.batherphilippa.dropgame.screen.MainMenuScreen;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
+import static com.batherphilippa.dropgame.utils.AssetConstants.SOUND_GAME_OVER_LOSER;
+
 public class OptionManager {
-
-    private final ConfigurationManager configManager;
-
-    public OptionManager() {
-        this.configManager = new ConfigurationManager();
-    }
 
     public static void handleConfigClicked(VisTextButton btn, Screen screen, Drop game) {
         btn.addListener(new ClickListener() {
@@ -35,16 +31,19 @@ public class OptionManager {
         });
     }
 
-    public static void handlePlayClicked(VisTextButton btn, Screen screen, Drop game) {
+    public static void handlePlayClicked(VisTextButton btn, Screen screen, Drop game, ResourceManager resourceManager) {
         btn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                if (resourceManager != null) {
+                    resourceManager.stopSound(SOUND_GAME_OVER_LOSER);
+                }
                 screen.dispose();
                 game.setScreen(new GameScreen(game));
             }
         });
     }
 
-    public static void handleReturnClicked(VisTextButton btn, Screen screen, Drop game) {
+    public static void handleMainMenuClicked(VisTextButton btn, Screen screen, Drop game) {
         btn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 screen.dispose();

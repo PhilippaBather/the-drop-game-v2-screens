@@ -24,6 +24,7 @@ public class ResourceManager {
         soundMap.put(SOUND_DROP, Gdx.audio.newSound(Gdx.files.internal("sound/drop.wav")));
         soundMap.put(SOUND_STONE, Gdx.audio.newSound(Gdx.files.internal("sound/stone.wav")));
         soundMap.put(SOUND_GAME_OVER, Gdx.audio.newSound(Gdx.files.internal("sound/game_over.wav")));
+        soundMap.put(SOUND_GAME_OVER_LOSER, Gdx.audio.newSound(Gdx.files.internal("sound/game_over_loser.wav")));
 
         musicMap = new HashMap<>();
         musicMap.put(MUSIC_THEME, Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3")));

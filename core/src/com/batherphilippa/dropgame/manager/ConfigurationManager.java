@@ -30,9 +30,9 @@ public class ConfigurationManager {
         gameLengthList.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 float len = switch (gameLengthList.getSelectedIndex()) {
-                    case 0 -> GAME_LENGTH_30S;
-                    case 1 -> GAME_LENGTH_45S;
-                    case 2 -> GAME_LENGTH_60S;
+                    case 0 -> GAME_LENGTH_SHORT;
+                    case 1 -> GAME_LENGTH_MEDIUM;
+                    case 2 -> GAME_LENGTH_LONG;
                     default ->
                             throw new IllegalStateException("Unexpected value: " + gameLengthList.getSelectedIndex());
                 };
@@ -49,9 +49,9 @@ public class ConfigurationManager {
     public static String getGameLengthOption() {
         float selected = getGameLength();
         String option = switch((int) selected) {
-            case (int) GAME_LENGTH_45S -> GAME_LENGTH_STR_45S;
-            case (int) GAME_LENGTH_60S -> GAME_LENGTH_STR_60S;
-            default -> GAME_LENGTH_STR_30S;
+            case (int) GAME_LENGTH_MEDIUM -> GAME_LENGTH_STR_MEDIUM;
+            case (int) GAME_LENGTH_LONG -> GAME_LENGTH_STR_LONG;
+            default -> GAME_LENGTH_STR_SHORT;
         };
         return option;
     }
