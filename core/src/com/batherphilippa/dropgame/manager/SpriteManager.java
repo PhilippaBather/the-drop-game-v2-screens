@@ -57,10 +57,6 @@ public class SpriteManager {
         game.batch.end();
     }
 
-//    public void manageInput(OrthographicCamera camera, Vector3 touchPos) {
-//        player.manageInput(camera, touchPos);
-//    }
-
     public void manageInput(OrthographicCamera camera, Vector3 touchPos) {
         if (!Gdx.input.isTouched()) {
             manageKeyPress();
@@ -108,7 +104,7 @@ public class SpriteManager {
     private void moveRaindrops() {
         for (Iterator<Raindrop> iter = raindrops.iterator(); iter.hasNext(); ) {
             Raindrop raindrop = iter.next();
-            raindrop.move(new Vector2(200 * Gdx.graphics.getDeltaTime(), 0), null);
+            raindrop.move(new Vector2(0, 200 * Gdx.graphics.getDeltaTime()), null);
             if (raindrop.getYCoord() + 64 < 0) {
                 iter.remove();
             }
