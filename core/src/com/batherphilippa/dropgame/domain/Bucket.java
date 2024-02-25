@@ -66,37 +66,6 @@ public class Bucket extends Character {
         dropsCollected++;
     }
 
-//    public void manageInput(OrthographicCamera camera, Vector3 touchPos) {
-//        if (!Gdx.input.isTouched()) {
-//            manageKeyPress();
-//        } else {
-//            manageTouchMousePress(camera, touchPos);
-//        }
-//    }
-//
-//    private void manageKeyPress() {
-//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-//            // Gdx.graphics.getDeltaTime() returns the time passed between the last and the current frame in seconds.
-//            super.rectangle.x -= 200 * Gdx.graphics.getDeltaTime();
-//        }
-//
-//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//            // Gdx.graphics.getDeltaTime() returns the time passed between the last and the current frame in seconds.
-//            super.rectangle.x += 200 * Gdx.graphics.getDeltaTime();
-//        }
-//    }
-//
-//    private void manageTouchMousePress(OrthographicCamera camera, Vector3 touchPos) {
-//        if (Gdx.input.isTouched()) {
-//            // transform touch/mouse coordinates to camera's coordinate system.
-//            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-//            // vector now contains touch/mouse coordinates in the coordinate system our bucket lives in
-//            camera.unproject(touchPos);
-//            // change position of bucket to be centered around the touch/mouse coordinates
-//            super.rectangle.x = touchPos.x - SPRITE_WIDTH / 2;
-//        }
-//    }
-
     private void checkBucketInBounds() {
         if (super.rectangle.x < 0) {
             super.rectangle.x = 0;
