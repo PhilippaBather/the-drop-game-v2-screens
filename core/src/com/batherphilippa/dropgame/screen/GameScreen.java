@@ -1,5 +1,7 @@
 package com.batherphilippa.dropgame.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,6 +19,7 @@ public class GameScreen implements Screen {
     private final ResourceManager resourceManager;
     private final SpriteManager spriteManager;
     private final Vector3 touchPos;
+    private boolean isPaused;
 
     public GameScreen(Drop game) {
         this.game = game;
@@ -29,6 +32,8 @@ public class GameScreen implements Screen {
         // use 3D vector as OrthographicCamera is actually a 3D camera
         // that also takes into account the z coordinates
         this.touchPos = new Vector3();
+
+        this.isPaused = false;
 
         loadSoundFX();
     }
@@ -47,11 +52,36 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
-        cameraManager.update();
-        cameraManager.setProjectionMatrix(game);
-        spriteManager.manageInput(cameraManager.getCamera(), touchPos);
-        spriteManager.update(delta);
-        spriteManager.draw();
+
+        checkForPause();
+
+        if (!isPaused) {
+            cameraManager.update();
+            cameraManager.setProjectionMatrix(game);
+            spriteManager.manageInput(cameraManager.getCamera(), touchPos);
+            spriteManager.update(delta);
+            spriteManager.draw();
+        } else {
+            // draw pause screen
+            game.batch.begin();
+            game.font.draw(game.batch, "Paused", 250, 250);
+            game.font.draw(game.batch, "Press 'Down' arrow to continue.", 250, 200);
+            game.batch.end();
+        }
+
+        checkForResume();
+    }
+
+    private void checkForPause() {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            isPaused = true;
+        }
+    }
+
+    private void checkForResume() {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            isPaused = false;
+        }
     }
     @Override
     public void resize(int width, int height) {
@@ -60,12 +90,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        isPaused = true;
     }
 
     @Override
     public void resume() {
-
+        isPaused = false;
     }
 
     @Override
