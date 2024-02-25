@@ -22,6 +22,7 @@ public class ResourceManager {
         // instantiate hash map and add fx
         soundMap = new HashMap<>();
         soundMap.put(SOUND_DROP, Gdx.audio.newSound(Gdx.files.internal("sound/drop.wav")));
+        soundMap.put(SOUND_STONE, Gdx.audio.newSound(Gdx.files.internal("sound/stone.wav")));
 
         musicMap = new HashMap<>();
         musicMap.put(MUSIC_THEME, Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3")));
@@ -29,7 +30,8 @@ public class ResourceManager {
         // instantiate hash map and add FileHandles for imgs
         imageMap = new HashMap<>();
         imageMap.put(CHARACTER_PLAYER, Gdx.files.internal("image/bucket.png"));
-        imageMap.put(CHARACTER_ITEM, Gdx.files.internal("image/drop.png"));
+        imageMap.put(CHARACTER_ITEM_DROP, Gdx.files.internal("image/drop.png"));
+        imageMap.put(CHARACTER_ITEM_ENEMY, Gdx.files.internal("image/stone.png"));
     }
 
     public FileHandle loadImage(String name) {
