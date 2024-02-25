@@ -57,8 +57,12 @@ public class Bucket extends Character {
         return dropsCollected;
     }
 
-    public void updateDropsCollected() {
-        dropsCollected++;
+    public void updateDropsCollected(boolean isEnemy) {
+        if (isEnemy) {
+            dropsCollected--;
+        } else {
+            dropsCollected++;
+        }
     }
 
     private void checkBucketInBounds() {
