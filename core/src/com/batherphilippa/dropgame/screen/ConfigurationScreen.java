@@ -10,6 +10,7 @@ import com.batherphilippa.dropgame.manager.OptionManager;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 
+import static com.batherphilippa.dropgame.utils.ConfigConstants.*;
 import static com.batherphilippa.dropgame.utils.UIConstants.*;
 
 public class ConfigurationScreen implements Screen {
@@ -21,8 +22,8 @@ public class ConfigurationScreen implements Screen {
     private VisLabel gameLengthLab;
     private VisLabel optionsMenuLab;
     private VisTextButton exitBtn;
+    private VisTextButton mainMenuBtn;
     private VisTextButton playBtn;
-    private VisTextButton returnBtn;
 
     public ConfigurationScreen(Drop game) {
         this.game = game;
@@ -30,7 +31,11 @@ public class ConfigurationScreen implements Screen {
 
     @Override
     public void show() {
-        ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        } else {
+            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+        }
 
         if (!VisUI.isLoaded()) {
             VisUI.load();
@@ -57,12 +62,12 @@ public class ConfigurationScreen implements Screen {
 
     private void createVisUIComponents() {
         exitBtn = new VisTextButton(BTN_EXIT);
+        mainMenuBtn = new VisTextButton(BTN_RETURN);
         playBtn = new VisTextButton(BTN_PLAY);
-        returnBtn = new VisTextButton(BTN_RETURN);
         darkModeCkBox = new VisCheckBox(LABEL_DARK_MODE);
         gameLengthLab = new VisLabel(LABEL_GAME_LENGTH);
         optionsMenuLab = new VisLabel(LABEL_OPTIONS_MENU_TITLE);
-        String[] timeLengths = {"30 seconds", "45 seconds", "1 minute"};
+        String[] timeLengths = {GAME_LENGTH_STR_SHORT, GAME_LENGTH_STR_MEDIUM, GAME_LENGTH_STR_LONG};
         gameLengthList = new VisList<>();
         gameLengthList.setItems(timeLengths);
     }
@@ -79,8 +84,8 @@ public class ConfigurationScreen implements Screen {
         ConfigurationManager.handleDarkModePref(darkModeCkBox);
         ConfigurationManager.handleGameLengthPref(gameLengthList);
         OptionManager.handleExitClicked(exitBtn, this);
-        OptionManager.handlePlayClicked(playBtn, this, game);
-        OptionManager.handleReturnClicked(returnBtn, this, game);
+        OptionManager.handlePlayClicked(playBtn, this, game, null);
+        OptionManager.handleMainMenuClicked(mainMenuBtn, this, game);
     }
 
     private void createTableStructure(VisTable optionsTable, VisTable actionsTable) {
@@ -101,12 +106,17 @@ public class ConfigurationScreen implements Screen {
         actionsTable.setPosition(0, -200);
         actionsTable.row();
         actionsTable.add(playBtn).center().width(150).height(30).pad(5);
-        actionsTable.add(returnBtn).center().width(150).height(30).pad(5);
+        actionsTable.add(mainMenuBtn).center().width(150).height(30).pad(5);
         actionsTable.add(exitBtn).center().width(150).height(30).pad(5);
     }
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        } else {
+            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+        }
+
 
         stage.act(delta);
         stage.draw();

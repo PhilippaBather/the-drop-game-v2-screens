@@ -19,7 +19,6 @@ public class MainMenuScreen implements Screen {
 
     private final Drop game;
     private final CameraManager cameraManager;
-    private final ConfigurationManager configManager;
     private Stage stage;
     private VisLabel titleLab;
     private VisTextButton configBtn;
@@ -29,7 +28,6 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Drop game) {
         this.game = game;
         this.cameraManager = new CameraManager();
-        this.configManager = new ConfigurationManager();
     }
 
     @Override
@@ -49,7 +47,7 @@ public class MainMenuScreen implements Screen {
 
         stage = new Stage();
         stage.addActor(table);
-        createBtns();
+        createComponents();
         setClickListeners();
         createTableStructure(table);
         Gdx.input.setInputProcessor(stage);
@@ -62,7 +60,7 @@ public class MainMenuScreen implements Screen {
         return table;
     }
 
-    private void createBtns() {
+    private void createComponents() {
         this.configBtn = new VisTextButton(BTN_CONFIG);
         this.exitBtn = new VisTextButton(BTN_EXIT);
         this.playBtn = new VisTextButton(BTN_PLAY);
@@ -83,7 +81,7 @@ public class MainMenuScreen implements Screen {
     private void setClickListeners() {
         OptionManager.handleConfigClicked(configBtn, this, game);
         OptionManager.handleExitClicked(exitBtn, this);
-        OptionManager.handlePlayClicked(playBtn, this, game);
+        OptionManager.handlePlayClicked(playBtn, this, game, null);
     }
 
     @Override

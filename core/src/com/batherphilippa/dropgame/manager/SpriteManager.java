@@ -20,7 +20,6 @@ import com.batherphilippa.dropgame.utils.KeyDirection;
 import java.util.Iterator;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.*;
-import static com.batherphilippa.dropgame.utils.ConfigConstants.GAME_LENGTH_30S;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
@@ -126,6 +125,7 @@ public class SpriteManager {
 
         gameTime -= delta;
         if (gameTime < 0) {
+            resourceManager.stopMusic(MUSIC_THEME);
             resourceManager.playSound(SOUND_GAME_OVER);
             game.setScreen(new GameOverScreen(game, player.getDropsCollected(), resourceManager));
             dispose();
@@ -133,7 +133,7 @@ public class SpriteManager {
 
         if (player.getDropsCollected() < 0) {
             resourceManager.stopMusic(MUSIC_THEME);
-            resourceManager.playSound(SOUND_GAME_OVER);
+            resourceManager.playSound(SOUND_GAME_OVER_LOSER);
             dispose();
             game.setScreen(new GameOverScreen(game, player.getDropsCollected(), resourceManager));
         }
