@@ -22,6 +22,8 @@ public class ResourceManager {
         // instantiate hash map and add fx
         soundMap = new HashMap<>();
         soundMap.put(SOUND_DROP, Gdx.audio.newSound(Gdx.files.internal("sound/drop.wav")));
+        soundMap.put(SOUND_STONE, Gdx.audio.newSound(Gdx.files.internal("sound/stone.wav")));
+        soundMap.put(SOUND_GAME_OVER, Gdx.audio.newSound(Gdx.files.internal("sound/game_over.wav")));
 
         musicMap = new HashMap<>();
         musicMap.put(MUSIC_THEME, Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3")));
@@ -29,7 +31,8 @@ public class ResourceManager {
         // instantiate hash map and add FileHandles for imgs
         imageMap = new HashMap<>();
         imageMap.put(CHARACTER_PLAYER, Gdx.files.internal("image/bucket.png"));
-        imageMap.put(CHARACTER_ITEM, Gdx.files.internal("image/drop.png"));
+        imageMap.put(CHARACTER_ITEM_DROP, Gdx.files.internal("image/drop.png"));
+        imageMap.put(CHARACTER_ITEM_ENEMY, Gdx.files.internal("image/stone.png"));
     }
 
     public FileHandle loadImage(String name) {
@@ -41,13 +44,17 @@ public class ResourceManager {
     public void loadSound(String name) {
         soundMap.get(name);
     }
-
     public void playMusic(String name) {
         musicMap.get(name).play();
     }
-
+    public void stopMusic(String name) {
+        musicMap.get(name).stop();
+    }
     public void playSound(String name) {
         soundMap.get(name).play();
+    }
+    public void stopSound(String name) {
+        soundMap.get(name).stop();
     }
     public void dispose() {
         imageMap.clear();

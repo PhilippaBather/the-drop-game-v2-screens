@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
         this.cameraManager = new CameraManager();
         this.resourceManager = new ResourceManager();
         this.resourceManager.loadResources();
-        this.spriteManager = new SpriteManager(this.resourceManager, this.game);
+        this.spriteManager = new SpriteManager(this.resourceManager, this.game, this);
 
         // use 3D vector as OrthographicCamera is actually a 3D camera
         // that also takes into account the z coordinates
