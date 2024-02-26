@@ -3,7 +3,6 @@ package com.batherphilippa.dropgame.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -52,7 +51,8 @@ public class SpriteManager {
 
     private void init() {
         // generate characters
-        player = new Bucket(new Texture(resourceManager.loadImage(CHARACTER_PLAYER)));
+//        player = new Bucket(new Texture(resourceManager.loadImage(CHARACTER_PLAYER)));
+        player = new Bucket(resourceManager.loadRegion(CHARACTER_PLAYER));
         raindrops = new Array<>();
         stones = new Array<>();
         spawnRaindrop();
@@ -60,13 +60,15 @@ public class SpriteManager {
     }
 
     private void spawnRaindrop() {
-        Raindrop raindrop = new Raindrop(new Texture(resourceManager.loadImage(CHARACTER_ITEM_DROP)));
+//        Raindrop raindrop = new Raindrop(new Texture(resourceManager.loadImage(CHARACTER_ITEM_DROP)));
+        Raindrop raindrop = new Raindrop(resourceManager.loadRegion(CHARACTER_ITEM_DROP));
         raindrops.add(raindrop);
         lastDropTime = raindrop.getLastDropTime();
     }
 
     private void spawnEnemy() {
-        Stone stone = new Stone(new Texture(resourceManager.loadImage(CHARACTER_ITEM_ENEMY)));
+//        Stone stone = new Stone(new Texture(resourceManager.loadImage(CHARACTER_ITEM_ENEMY)));
+        Stone stone = new Stone(resourceManager.loadRegion(CHARACTER_ITEM_ENEMY));
         stones.add(stone);
         lastDropTime = stone.getLastDropTime();
     }
@@ -166,7 +168,8 @@ public class SpriteManager {
     }
 
     public void dispose() {
-        player.getTexture().dispose();
+//        player.getTexture().dispose();
         raindrops.clear();
+        stones.clear();
     }
 }
