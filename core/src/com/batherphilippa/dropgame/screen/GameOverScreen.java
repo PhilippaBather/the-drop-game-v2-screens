@@ -7,15 +7,18 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
 
-public class MainMenuScreen implements Screen {
+public class GameOverScreen implements Screen {
 
     private final Drop game;
     private CameraManager cameraManager;
+    private int points;
 
-    public MainMenuScreen(Drop game) {
+    public GameOverScreen(Drop game, int points) {
         this.game = game;
         this.cameraManager = new CameraManager();
+        this.points = points;
     }
+
 
     @Override
     public void show() {
@@ -30,20 +33,16 @@ public class MainMenuScreen implements Screen {
         cameraManager.setProjectionMatrix(game);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Drop!!!", 250, 250); // x and y: position of font on screen
-        game.font.draw(game.batch, "Tap anywhere to begin!", 250, 200);
-        game.font.draw(game.batch, "Press ESCAPE to exit", 250, 150);
+        game.font.draw(game.batch, "Game Over!!!", 250, 250);
+        game.font.draw(game.batch, "Points collected: " + points, 250, 200);
+        game.font.draw(game.batch, "Press Escape to Exit", 250, 150);
         game.batch.end();
-
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose(); // dispose of MainMenuScreen
-        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             dispose();
-            System.exit(0);  // zero indicates non abnormal termination
+            System.exit(0);
         }
+
     }
 
     @Override
@@ -68,6 +67,5 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }

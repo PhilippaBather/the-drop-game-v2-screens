@@ -16,7 +16,6 @@ public class GameScreen implements Screen {
     private final CameraManager cameraManager;
     private final ResourceManager resourceManager;
     private final SpriteManager spriteManager;
-
     private final Vector3 touchPos;
 
     public GameScreen(Drop game) {
@@ -32,7 +31,6 @@ public class GameScreen implements Screen {
         this.touchPos = new Vector3();
 
         loadSoundFX();
-
     }
 
     private void loadSoundFX() {
@@ -49,10 +47,10 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
-        cameraManager.getCamera().update();
-        game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
+        cameraManager.update();
+        cameraManager.setProjectionMatrix(game);
         spriteManager.manageInput(cameraManager.getCamera(), touchPos);
-        spriteManager.update();
+        spriteManager.update(delta);
         spriteManager.draw();
     }
     @Override

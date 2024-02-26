@@ -45,7 +45,6 @@ public class Raindrop extends Character {
         return this.lastDropTime;
     }
 
-
     public float getYCoord() {
         return super.rectangle.y;
     }

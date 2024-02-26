@@ -11,12 +11,15 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.domain.Bucket;
 import com.batherphilippa.dropgame.domain.Raindrop;
+import com.batherphilippa.dropgame.screen.GameOverScreen;
 import com.batherphilippa.dropgame.utils.KeyDirection;
 
 import java.util.Iterator;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.*;
+import static com.batherphilippa.dropgame.utils.ConfigConstants.GAME_TIME;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
+import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
 
 public class SpriteManager {
@@ -27,10 +30,12 @@ public class SpriteManager {
     private Bucket player;
     private Array<Raindrop> raindrops;
     private float lastDropTime;
+    private float gameTime;
 
     public SpriteManager(ResourceManager resourceManager, Drop game) {
         this.resourceManager = resourceManager;
         this.game = game;
+        this.gameTime = GAME_TIME;  // in sec
         init();
     }
 
@@ -49,17 +54,14 @@ public class SpriteManager {
 
     public void draw() {
         game.batch.begin();
-        game.font.draw(game.batch, "Drops Collected: " + player.getDropsCollected(), 0, VIEWPORT_HEIGHT);
+        game.font.draw(game.batch, "Drops Collected: " + player.getDropsCollected(), 10, VIEWPORT_HEIGHT - 10);
+        game.font.draw(game.batch, "Time: " + (int) gameTime, VIEWPORT_WIDTH - 60, VIEWPORT_HEIGHT - 10);
         player.render(game.batch);
         for (Raindrop raindrop : raindrops) {
             raindrop.render(game.batch);
         }
         game.batch.end();
     }
-
-//    public void manageInput(OrthographicCamera camera, Vector3 touchPos) {
-//        player.manageInput(camera, touchPos);
-//    }
 
     public void manageInput(OrthographicCamera camera, Vector3 touchPos) {
         if (!Gdx.input.isTouched()) {
@@ -93,10 +95,16 @@ public class SpriteManager {
     }
 
 
-    public void update() {
+    public void update(float delta) {
         player.update();
         checkLastDropTime(); // check last time raindrop spawned; create if necessary
         moveRaindrops();
+
+        gameTime -= delta;
+        if (gameTime < 0) {
+            dispose();
+            game.setScreen(new GameOverScreen(game, player.getDropsCollected()));
+        }
     }
 
     private void checkLastDropTime() {
@@ -108,7 +116,7 @@ public class SpriteManager {
     private void moveRaindrops() {
         for (Iterator<Raindrop> iter = raindrops.iterator(); iter.hasNext(); ) {
             Raindrop raindrop = iter.next();
-            raindrop.move(new Vector2(200 * Gdx.graphics.getDeltaTime(), 0), null);
+            raindrop.move(new Vector2(0, 200 * Gdx.graphics.getDeltaTime()), null);
             if (raindrop.getYCoord() + 64 < 0) {
                 iter.remove();
             }
