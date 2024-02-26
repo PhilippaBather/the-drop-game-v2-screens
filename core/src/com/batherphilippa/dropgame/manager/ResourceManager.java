@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,8 @@ public class ResourceManager {
 
     // TODO - TextureAtlas: at moment assets not in pack - look up TexturePacker
 
-    private Map<String, FileHandle> imageMap;
+    private TextureAtlas textAtlas;
+//    private Map<String, FileHandle> imageMap;
     private Map<String, Sound> soundMap;
     private Map<String, Music> musicMap;
     public void loadResources() {
@@ -30,14 +32,20 @@ public class ResourceManager {
         musicMap.put(MUSIC_THEME, Gdx.audio.newMusic(Gdx.files.internal("music/rain.mp3")));
 
         // instantiate hash map and add FileHandles for imgs
-        imageMap = new HashMap<>();
-        imageMap.put(CHARACTER_PLAYER, Gdx.files.internal("image/bucket.png"));
-        imageMap.put(CHARACTER_ITEM_DROP, Gdx.files.internal("image/drop.png"));
-        imageMap.put(CHARACTER_ITEM_ENEMY, Gdx.files.internal("image/stone.png"));
+//        imageMap = new HashMap<>();
+//        imageMap.put(CHARACTER_PLAYER, Gdx.files.internal("image/bucket.png"));
+//        imageMap.put(CHARACTER_ITEM_DROP, Gdx.files.internal("image/drop.png"));
+//        imageMap.put(CHARACTER_ITEM_ENEMY, Gdx.files.internal("image/stone.png"));
+        textAtlas = new TextureAtlas(Gdx.files.internal("image/atlas/drop_game_atlas.atlas"));
     }
 
-    public FileHandle loadImage(String name) {
-        return imageMap.get(name);
+//    public FileHandle loadImage(String name) {
+////        return imageMap.get(name);
+//        return textAtlas.findRegion(name);
+//    }
+
+    public TextureAtlas.AtlasRegion loadRegion(String name) {
+        return textAtlas.findRegion(name);
     }
     public Music loadMusic(String name) {
         return musicMap.get(name);
@@ -58,8 +66,9 @@ public class ResourceManager {
         soundMap.get(name).stop();
     }
     public void dispose() {
-        imageMap.clear();
+//        imageMap.clear();
         musicMap.clear();
         soundMap.clear();
+        textAtlas.dispose();
     }
 }

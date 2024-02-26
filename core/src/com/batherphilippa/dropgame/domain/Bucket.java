@@ -1,6 +1,6 @@
 package com.batherphilippa.dropgame.domain;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.batherphilippa.dropgame.utils.KeyDirection;
@@ -14,11 +14,12 @@ import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
 public class Bucket extends Character {
     private int dropsCollected;
 
-    public Bucket(Texture texture) {
-        super(texture);
+    public Bucket(TextureRegion region) {
+        super(region);  // TextureRegion, not Texture as using TextureAtlas
         this.dropsCollected = 0;
         setInitialCoordinates();
     }
+
 
     public void setInitialCoordinates() {
         super.rectangle.x = (VIEWPORT_WIDTH / 2) - (SPRITE_WIDTH / 2);
@@ -79,8 +80,12 @@ public class Bucket extends Character {
         return super.rectangle;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
+//    /**
+//     * Used to dispose of the Texture
+//     * @return Texture
+//     */
+//    public Texture getTexture() {
+//        return texture;
+//    }
 
 }

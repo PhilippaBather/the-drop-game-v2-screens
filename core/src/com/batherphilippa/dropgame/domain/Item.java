@@ -1,6 +1,6 @@
 package com.batherphilippa.dropgame.domain;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -16,8 +16,8 @@ public class Item extends Character {
 
     private final long lastDropTime;
 
-    public Item(Texture texture) {
-        super(texture);
+    public Item(TextureRegion region) {
+        super(region);
         this.lastDropTime = TimeUtils.nanoTime();
     }
 
@@ -37,7 +37,6 @@ public class Item extends Character {
     @Override
     public void update() {
     }
-
 
     public Rectangle getRectangle() {
         return super.rectangle;
