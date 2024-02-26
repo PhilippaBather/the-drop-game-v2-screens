@@ -20,7 +20,7 @@ import com.batherphilippa.dropgame.utils.KeyDirection;
 import java.util.Iterator;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.*;
-import static com.batherphilippa.dropgame.utils.ConfigConstants.GAME_TIME;
+import static com.batherphilippa.dropgame.utils.ConfigConstants.GAME_LENGTH_30S;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
@@ -41,7 +41,13 @@ public class SpriteManager {
         this.resourceManager = resourceManager;
         this.game = game;
         this.gameScreen = gameScreen;
-        this.gameTime = GAME_TIME;  // in sec
+
+        if (ConfigurationManager.getGameLength() == 0) {
+            this.gameTime = 30;
+        } else {
+            this.gameTime = ConfigurationManager.getGameLength();
+        }
+
         init();
     }
 

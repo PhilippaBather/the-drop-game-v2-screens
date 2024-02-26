@@ -1,54 +1,108 @@
 package com.batherphilippa.dropgame.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
+import com.batherphilippa.dropgame.manager.ConfigurationManager;
+import com.batherphilippa.dropgame.manager.OptionManager;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
+
+import static com.batherphilippa.dropgame.utils.UIConstants.*;
 
 public class MainMenuScreen implements Screen {
 
     private final Drop game;
-    private CameraManager cameraManager;
+    private final CameraManager cameraManager;
+    private final ConfigurationManager configManager;
+    private Stage stage;
+    private VisLabel titleLab;
+    private VisTextButton configBtn;
+    private VisTextButton exitBtn;
+    private VisTextButton playBtn;
 
     public MainMenuScreen(Drop game) {
         this.game = game;
         this.cameraManager = new CameraManager();
+        this.configManager = new ConfigurationManager();
     }
 
     @Override
     public void show() {
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        } else {
+            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+        }
 
+
+        if (!VisUI.isLoaded()) {
+            VisUI.load();
+        }
+
+        VisTable table = createTableObject();
+
+        stage = new Stage();
+        stage.addActor(table);
+        createBtns();
+        setClickListeners();
+        createTableStructure(table);
+        Gdx.input.setInputProcessor(stage);
+
+    }
+
+    private VisTable createTableObject() {
+        VisTable table = new VisTable(true);
+        table.setFillParent(true);
+        return table;
+    }
+
+    private void createBtns() {
+        this.configBtn = new VisTextButton(BTN_CONFIG);
+        this.exitBtn = new VisTextButton(BTN_EXIT);
+        this.playBtn = new VisTextButton(BTN_PLAY);
+        this.titleLab = new VisLabel(LABEL_WELCOME);
+    }
+
+    private void createTableStructure(VisTable table) {
+        table.row();
+        table.add(titleLab).center().height(50);
+        table.row();
+        table.add(playBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(configBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(exitBtn).center().width(200).height(50).pad(5);
+    }
+
+    private void setClickListeners() {
+        OptionManager.handleConfigClicked(configBtn, this, game);
+        OptionManager.handleExitClicked(exitBtn, this);
+        OptionManager.handlePlayClicked(playBtn, this, game);
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+        } else {
+            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+        }
 
         cameraManager.update();
         cameraManager.setProjectionMatrix(game);
-
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Drop!!!", 250, 250); // x and y: position of font on screen
-        game.font.draw(game.batch, "Tap anywhere to begin!", 250, 200);
-        game.font.draw(game.batch, "Press ESCAPE to exit", 250, 150);
-        game.batch.end();
-
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose(); // dispose of MainMenuScreen
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            dispose();
-            System.exit(0);  // zero indicates non abnormal termination
-        }
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height);
     }
 
     @Override
@@ -68,6 +122,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
