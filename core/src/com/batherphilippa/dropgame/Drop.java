@@ -3,7 +3,7 @@ package com.batherphilippa.dropgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.batherphilippa.dropgame.screen.MainMenuScreen;
+import com.batherphilippa.dropgame.screen.SplashScreen;
 
 /**
  * Drop class - entry point to the game.
@@ -16,7 +16,7 @@ public class Drop extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // use libGDX' default Arial font
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new SplashScreen(this));
 	}
 
 	@Override
