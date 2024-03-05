@@ -5,20 +5,20 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.*;
 
-public class ResourceManager {
-
-    // TODO - TextureAtlas: at moment assets not in pack - look up TexturePacker
+public class ResourceManager implements Disposable {
 
     private TextureAtlas textAtlas;
 //    private Map<String, FileHandle> imageMap;
     private Map<String, Sound> soundMap;
     private Map<String, Music> musicMap;
+    private Map<String, FileHandle> uiMap;
     public void loadResources() {
 
         // instantiate hash map and add fx
@@ -37,6 +37,10 @@ public class ResourceManager {
 //        imageMap.put(CHARACTER_ITEM_DROP, Gdx.files.internal("image/drop.png"));
 //        imageMap.put(CHARACTER_ITEM_ENEMY, Gdx.files.internal("image/stone.png"));
         textAtlas = new TextureAtlas(Gdx.files.internal("image/atlas/drop_game_atlas.atlas"));
+
+        // TODO - add to textAtlas
+        uiMap = new HashMap<>();
+        uiMap.put(UI_SPLASH, Gdx.files.internal("image/ui/splash.png"));
     }
 
 //    public FileHandle loadImage(String name) {
@@ -65,10 +69,17 @@ public class ResourceManager {
     public void stopSound(String name) {
         soundMap.get(name).stop();
     }
+
+    public FileHandle loadSplashImg() {
+        return uiMap.get(UI_SPLASH);
+    }
+
+    @Override
     public void dispose() {
 //        imageMap.clear();
         musicMap.clear();
         soundMap.clear();
+        uiMap.clear();
         textAtlas.dispose();
     }
 }
