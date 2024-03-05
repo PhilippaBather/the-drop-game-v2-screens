@@ -3,11 +3,11 @@ package com.batherphilippa.dropgame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
 import com.batherphilippa.dropgame.manager.ConfigurationManager;
 import com.batherphilippa.dropgame.manager.OptionManager;
+import com.batherphilippa.dropgame.screen.utils.ScreenUtils;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -33,9 +33,9 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5);
         } else {
-            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
         }
 
 
@@ -87,9 +87,9 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clear(0.5f, 0, 0.2f, 5);
+            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5   );
         } else {
-            ScreenUtils.clear(0.8f, 0, 0.1f, 3);
+            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
         }
 
         cameraManager.update();

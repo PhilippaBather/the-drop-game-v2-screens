@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
 import com.batherphilippa.dropgame.manager.ConfigurationManager;
 import com.batherphilippa.dropgame.manager.ResourceManager;
 import com.batherphilippa.dropgame.manager.SpriteManager;
+import com.batherphilippa.dropgame.screen.utils.ScreenUtils;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.MUSIC_THEME;
 import static com.batherphilippa.dropgame.utils.AssetConstants.SOUND_DROP;
@@ -47,15 +47,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            ScreenUtils.clearScreen(0, 0, 0f, 0);
+        } else {
+            ScreenUtils.clearScreen(0, 0, 0.2f, 1);
+        }
         resourceManager.playMusic(MUSIC_THEME);
     }
 
     @Override
     public void render(float delta) {
         if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clear(0, 0, 0f, 0);
+            ScreenUtils.clearScreen(0, 0, 0f, 0);
         } else {
-            ScreenUtils.clear(0, 0, 0.2f, 1);
+            ScreenUtils.clearScreen(0, 0, 0.2f, 1);
         }
 
         checkForPause();
