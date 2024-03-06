@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.kotcrab.vis.ui.widget.VisTable;
 
-public class ScreenUtils {
+public class UIUtils {
 
     public static void clearScreen(float red, float green, float blue, float alpha) {
         com.badlogic.gdx.utils.ScreenUtils.clear(red, green, blue, alpha);
