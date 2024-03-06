@@ -6,8 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.CameraManager;
 import com.batherphilippa.dropgame.manager.ConfigurationManager;
+import com.batherphilippa.dropgame.manager.GameState;
 import com.batherphilippa.dropgame.manager.OptionManager;
-import com.batherphilippa.dropgame.screen.utils.ScreenUtils;
+import com.batherphilippa.dropgame.screen.utils.UIUtils;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -32,18 +33,13 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5);
-        } else {
-            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
-        }
-
+        clearScreen();
 
         if (!VisUI.isLoaded()) {
             VisUI.load();
         }
 
-        VisTable table = createTableObject();
+        VisTable table = UIUtils.createTableObj();
 
         stage = new Stage();
         stage.addActor(table);
@@ -54,44 +50,9 @@ public class MainMenuScreen implements Screen {
 
     }
 
-    private VisTable createTableObject() {
-        VisTable table = new VisTable(true);
-        table.setFillParent(true);
-        return table;
-    }
-
-    private void createComponents() {
-        this.configBtn = new VisTextButton(BTN_CONFIG);
-        this.exitBtn = new VisTextButton(BTN_EXIT);
-        this.playBtn = new VisTextButton(BTN_PLAY);
-        this.titleLab = new VisLabel(LABEL_WELCOME);
-    }
-
-    private void createTableStructure(VisTable table) {
-        table.row();
-        table.add(titleLab).center().height(50);
-        table.row();
-        table.add(playBtn).center().width(200).height(50).pad(5);
-        table.row();
-        table.add(configBtn).center().width(200).height(50).pad(5);
-        table.row();
-        table.add(exitBtn).center().width(200).height(50).pad(5);
-    }
-
-    private void setClickListeners() {
-        OptionManager.handleConfigClicked(configBtn, this, game);
-        OptionManager.handleExitClicked(exitBtn, this);
-        OptionManager.handlePlayClicked(playBtn, this, game, null);
-    }
-
     @Override
     public void render(float delta) {
-        if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5   );
-        } else {
-            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
-        }
-
+        clearScreen();
         cameraManager.update();
         cameraManager.setProjectionMatrix(game);
         stage.act(delta);
@@ -105,12 +66,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.gameState = GameState.PAUSED;
     }
 
     @Override
     public void resume() {
-
+        game.gameState = GameState.RUNNING;
     }
 
     @Override
@@ -121,5 +82,37 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private void clearScreen() {
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            UIUtils.clearScreen(0.5f, 0, 0.2f, 5);
+        } else {
+            UIUtils.clearScreen(0.8f, 0, 0.1f, 3);
+        }
+    }
+
+    private void createComponents() {
+        this.configBtn = new VisTextButton(BTN_CONFIG);
+        this.exitBtn = new VisTextButton(BTN_EXIT);
+        this.playBtn = new VisTextButton(BTN_PLAY);
+        this.titleLab = new VisLabel(LABEL_WELCOME);
+    }
+
+    private void setClickListeners() {
+        OptionManager.handleConfigClicked(configBtn, this, game, MenuType.MAIN_MENU);
+        OptionManager.handleExitClicked(exitBtn, this);
+        OptionManager.handlePlayClicked(playBtn, this, game, null);
+    }
+
+    private void createTableStructure(VisTable table) {
+        table.row();
+        table.add(titleLab).center().height(50);
+        table.row();
+        table.add(playBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(configBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(exitBtn).center().width(200).height(50).pad(5);
     }
 }

@@ -5,8 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.batherphilippa.dropgame.Drop;
 import com.batherphilippa.dropgame.manager.ConfigurationManager;
+import com.batherphilippa.dropgame.manager.GameState;
 import com.batherphilippa.dropgame.manager.OptionManager;
-import com.batherphilippa.dropgame.screen.utils.ScreenUtils;
+import com.batherphilippa.dropgame.screen.utils.UIUtils;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 
@@ -16,33 +17,31 @@ import static com.batherphilippa.dropgame.utils.UIConstants.*;
 public class ConfigurationScreen implements Screen {
 
     private final Drop game;
+    private final MenuType prevMenu;
     private Stage stage;
     private VisCheckBox darkModeCkBox;
     private VisList<String> gameLengthList;
     private VisLabel gameLengthLab;
     private VisLabel optionsMenuLab;
     private VisTextButton exitBtn;
-    private VisTextButton mainMenuBtn;
+    private VisTextButton returnBtn;
     private VisTextButton playBtn;
 
-    public ConfigurationScreen(Drop game) {
+    public ConfigurationScreen(Drop game, MenuType prevMenu) {
         this.game = game;
+        this.prevMenu = prevMenu;
     }
 
     @Override
     public void show() {
-        if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5);
-        } else {
-            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
-        }
+        clearScreen();
 
         if (!VisUI.isLoaded()) {
             VisUI.load();
         }
 
-        VisTable optionsTable = createTableObject();
-        VisTable actionsTable = createTableObject();
+        VisTable optionsTable = UIUtils.createTableObj();
+        VisTable actionsTable = UIUtils.createTableObj();
 
         stage = new Stage();
         stage.addActor(optionsTable);
@@ -54,15 +53,49 @@ public class ConfigurationScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    private VisTable createTableObject() {
-        VisTable table = new VisTable(true);
-        table.setFillParent(true);
-        return table;
+    @Override
+    public void render(float delta) {
+        clearScreen();
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
+    }
+
+    @Override
+    public void pause() {
+        game.gameState = GameState.PAUSED;
+    }
+
+    @Override
+    public void resume() {
+        game.gameState = GameState.RUNNING;
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
+
+    private void clearScreen() {
+        if (ConfigurationManager.isDarkModeEnabled()) {
+            UIUtils.clearScreen(0.5f, 0, 0.2f, 5);
+        } else {
+            UIUtils.clearScreen(0.8f, 0, 0.1f, 3);
+        }
     }
 
     private void createVisUIComponents() {
         exitBtn = new VisTextButton(BTN_EXIT);
-        mainMenuBtn = new VisTextButton(BTN_RETURN);
+        returnBtn = new VisTextButton(BTN_RETURN);
         playBtn = new VisTextButton(BTN_PLAY);
         darkModeCkBox = new VisCheckBox(LABEL_DARK_MODE);
         gameLengthLab = new VisLabel(LABEL_GAME_LENGTH);
@@ -85,7 +118,7 @@ public class ConfigurationScreen implements Screen {
         ConfigurationManager.handleGameLengthPref(gameLengthList);
         OptionManager.handleExitClicked(exitBtn, this);
         OptionManager.handlePlayClicked(playBtn, this, game, null);
-        OptionManager.handleMainMenuClicked(mainMenuBtn, this, game);
+        OptionManager.handleMenuReturnClicked(returnBtn, this, game, prevMenu, null);
     }
 
     private void createTableStructure(VisTable optionsTable, VisTable actionsTable) {
@@ -106,44 +139,7 @@ public class ConfigurationScreen implements Screen {
         actionsTable.setPosition(0, -200);
         actionsTable.row();
         actionsTable.add(playBtn).center().width(150).height(30).pad(5);
-        actionsTable.add(mainMenuBtn).center().width(150).height(30).pad(5);
+        actionsTable.add(returnBtn).center().width(150).height(30).pad(5);
         actionsTable.add(exitBtn).center().width(150).height(30).pad(5);
-    }
-    @Override
-    public void render(float delta) {
-        if (ConfigurationManager.isDarkModeEnabled()) {
-            ScreenUtils.clearScreen(0.5f, 0, 0.2f, 5);
-        } else {
-            ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
-        }
-
-
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }
