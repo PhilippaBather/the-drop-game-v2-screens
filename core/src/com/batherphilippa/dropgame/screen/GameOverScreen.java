@@ -104,7 +104,7 @@ public class GameOverScreen implements Screen {
     private void createComponents() {
         this.titleLabel = new VisLabel(LABEL_GAMEOVER_TITLE);
         this.exitBtn = new VisTextButton(BTN_EXIT);
-        this.mainMenuBtn = new VisTextButton(BTN_RETURN);
+        this.mainMenuBtn = new VisTextButton(BTN_MAIN_MENU);
         this.playBtn = new VisTextButton(BTN_PLAY);
     }
 
