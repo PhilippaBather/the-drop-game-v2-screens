@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.batherphilippa.dropgame.Drop;
+import com.batherphilippa.dropgame.manager.GameState;
 import com.batherphilippa.dropgame.manager.ResourceManager;
-import com.batherphilippa.dropgame.screen.utils.ScreenUtils;
+import com.batherphilippa.dropgame.screen.utils.UIUtils;
 
 public class SplashScreen implements Screen {
 
@@ -33,7 +34,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
+        UIUtils.clearScreen(0.8f, 0, 0.1f, 3);
 
         Table table = new Table();
         table.setFillParent(true);
@@ -57,7 +58,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clearScreen(0.8f, 0, 0.1f, 3);
+        UIUtils.clearScreen(0.8f, 0, 0.1f, 3);
 
         stage.act();
         stage.draw();
@@ -75,12 +76,12 @@ public class SplashScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.gameState = GameState.PAUSED;
     }
 
     @Override
     public void resume() {
-
+        game.gameState = GameState.RUNNING;
     }
 
     @Override
@@ -90,7 +91,9 @@ public class SplashScreen implements Screen {
 
     @Override
     public void dispose() {
+        splashImg.clear();
         resourceManager.dispose();
         splashTexture.dispose();
+        stage.dispose();
     }
 }

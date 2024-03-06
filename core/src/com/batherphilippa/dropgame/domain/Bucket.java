@@ -20,7 +20,6 @@ public class Bucket extends Character {
         setInitialCoordinates();
     }
 
-
     public void setInitialCoordinates() {
         super.rectangle.x = (VIEWPORT_WIDTH / 2) - (SPRITE_WIDTH / 2);
         super.rectangle.y = 20;
@@ -78,6 +77,10 @@ public class Bucket extends Character {
 
     public Rectangle getBucketRectangle() {
         return super.rectangle;
+    }
+
+    public void setDropsCollected(int points) {
+        dropsCollected = points;
     }
 
 //    /**

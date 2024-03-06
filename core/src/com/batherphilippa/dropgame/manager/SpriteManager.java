@@ -19,6 +19,7 @@ import com.batherphilippa.dropgame.utils.KeyDirection;
 import java.util.Iterator;
 
 import static com.batherphilippa.dropgame.utils.AssetConstants.*;
+import static com.batherphilippa.dropgame.utils.ConfigConstants.GAME_LENGTH_SHORT;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_HEIGHT;
 import static com.batherphilippa.dropgame.utils.ScreenConstants.VIEWPORT_WIDTH;
 import static com.batherphilippa.dropgame.utils.SpriteConstants.SPRITE_WIDTH;
@@ -27,7 +28,6 @@ public class SpriteManager {
 
     private final ResourceManager resourceManager;
     private final Drop game;
-    private final GameScreen gameScreen;
 
     private Bucket player;
     private Array<Item> raindrops;
@@ -35,13 +35,12 @@ public class SpriteManager {
     private float lastDropTime;
     private float gameTime;
 
-    public SpriteManager(ResourceManager resourceManager, Drop game, GameScreen gameScreen) {
+    public SpriteManager(ResourceManager resourceManager, Drop game) {
         this.resourceManager = resourceManager;
         this.game = game;
-        this.gameScreen = gameScreen;
 
         if (ConfigurationManager.getGameLength() == 0) {
-            this.gameTime = 30;
+            this.gameTime = GAME_LENGTH_SHORT;
         } else {
             this.gameTime = ConfigurationManager.getGameLength();
         }
@@ -165,6 +164,18 @@ public class SpriteManager {
                 iter.remove();
             }
         }
+    }
+
+    public float[] getStats() {
+        return new float[] {player.getDropsCollected(), gameTime};
+    }
+
+    public void setTime(float time) {
+        gameTime = time;
+    }
+
+    public void setPoints(int points) {
+        player.setDropsCollected(points);
     }
 
     public void dispose() {

@@ -16,19 +16,24 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 
 import static com.batherphilippa.dropgame.utils.UIConstants.*;
 
-public class MainMenuScreen implements Screen {
+public class GameMenuScreen implements Screen {
 
     private final Drop game;
     private final CameraManager cameraManager;
-    private Stage stage;
-    private VisLabel titleLab;
+    private VisLabel titleLabel;
     private VisTextButton configBtn;
+    private VisTextButton contBtn;
     private VisTextButton exitBtn;
-    private VisTextButton playBtn;
+    private VisTextButton newGameBtn;
+    private VisTextButton saveBtn;
+    private final Stage stage;
+    private final float[] gameStats;
 
-    public MainMenuScreen(Drop game) {
+    public GameMenuScreen(Drop game, float[] gameStats) {
         this.game = game;
+        this.stage = new Stage();
         this.cameraManager = new CameraManager();
+        this.gameStats = gameStats;
     }
 
     @Override
@@ -40,14 +45,11 @@ public class MainMenuScreen implements Screen {
         }
 
         VisTable table = UIUtils.createTableObj();
-
-        stage = new Stage();
         stage.addActor(table);
         createComponents();
         setClickListeners();
         createTableStructure(table);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
@@ -61,7 +63,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+
     }
 
     @Override
@@ -91,25 +93,32 @@ public class MainMenuScreen implements Screen {
             UIUtils.clearScreen(0.8f, 0, 0.1f, 3);
         }
     }
-
     private void createComponents() {
+        this.titleLabel = new VisLabel(LABEL_GAME_MENU);
         this.configBtn = new VisTextButton(BTN_CONFIG);
+        this.contBtn = new VisTextButton(BTN_CONT);
         this.exitBtn = new VisTextButton(BTN_EXIT);
-        this.playBtn = new VisTextButton(BTN_PLAY);
-        this.titleLab = new VisLabel(LABEL_WELCOME);
+        this.newGameBtn = new VisTextButton(BTN_NEW_GAME);
+        this.saveBtn = new VisTextButton(BTN_SAVE);
     }
 
     private void setClickListeners() {
-        OptionManager.handleConfigClicked(configBtn, this, game, MenuType.MAIN_MENU);
+        OptionManager.handleConfigClicked(configBtn, this, game, MenuType.GAME_MENU);
+        OptionManager.handleContClicked(contBtn, this, game, gameStats);
         OptionManager.handleExitClicked(exitBtn, this);
-        OptionManager.handlePlayClicked(playBtn, this, game, null);
+        OptionManager.handlePlayClicked(newGameBtn, this, game, null);
+        OptionManager.handleSaveClicked(saveBtn, this, game);
     }
 
     private void createTableStructure(VisTable table) {
         table.row();
-        table.add(titleLab).center().height(50);
+        table.add(titleLabel).center().height(50);
         table.row();
-        table.add(playBtn).center().width(200).height(50).pad(5);
+        table.add(contBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(newGameBtn).center().width(200).height(50).pad(5);
+        table.row();
+        table.add(saveBtn).center().width(200).height(50).pad(5);
         table.row();
         table.add(configBtn).center().width(200).height(50).pad(5);
         table.row();
