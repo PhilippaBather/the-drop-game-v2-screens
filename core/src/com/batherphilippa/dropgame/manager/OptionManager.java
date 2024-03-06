@@ -61,7 +61,10 @@ public class OptionManager {
     public static void handleMenuReturnClicked(VisTextButton btn, Screen screen, Drop game, MenuType menu, SpriteManager spriteManager) {
         btn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                float[] gameStats = spriteManager.getStats();
+                float[] gameStats = null;
+                if (spriteManager != null) {
+                    gameStats = spriteManager.getStats();
+                }
                 screen.dispose();
                 switch (menu) {
                     case GAME_MENU -> game.setScreen(new GameMenuScreen(game, gameStats));
