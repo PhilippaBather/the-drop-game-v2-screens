@@ -8,6 +8,7 @@ public class UIConstants {
     public static final String BTN_NEW_GAME = "NEW GAME";
     public static final String BTN_PAUSE = "PAUSE";
     public static final String BTN_PLAY = "PLAY";
+    public static final String BTN_MAIN_MENU = "MAIN MENU";
     public static final String BTN_MENU = "MENU";
     public static final String BTN_RETURN = "RETURN";
     public static final String BTN_SAVE = "SAVE";
